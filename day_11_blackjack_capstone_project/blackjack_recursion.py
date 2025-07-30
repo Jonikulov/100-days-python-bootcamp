@@ -73,9 +73,13 @@ def play_blackjack(new_game=True, player_cards=None, bot_cards=None):
         player_cards.append(card)
         player_score += card
         if player_score > 21:
-            print_cards_scores()
-            print("YOU LOSE. You went over.")
-            return play_blackjack()
+            if 11 in player_cards and player_score - 10 <= 21:
+                player_cards[player_cards.index(11)] = 1
+                player_score -= 10
+            else:
+                print_cards_scores()
+                print("YOU LOSE. You went over.")
+                return play_blackjack()
         print_cards_scores(False, False)
         return play_blackjack(False, player_cards, bot_cards)
 
