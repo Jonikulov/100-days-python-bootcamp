@@ -40,6 +40,9 @@ class Snake(turtle.Turtle):
 
 # TODO debug: each snake (turtle) object creation is visible at the center - annoying.
 
+# TODO debug: use screen.tracer & screen.update so that,
+#  there's no glitch in the animation of the game (score_board, new turtle, etc.).
+
 snake = Snake()
 snake.segments.append(Snake())
 
