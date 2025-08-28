@@ -1,4 +1,4 @@
-"""Day 24. Files, Directories, Paths"""
+"""Day 24. Mail Merge"""
 
 # Create a letter using starting_letter.txt 
 with open("./Input/Letters/starting_letter.txt") as file:
