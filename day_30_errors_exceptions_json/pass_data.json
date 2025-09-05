@@ -1,0 +1,18 @@
+{
+    "Amazon": {
+        "email": "example@email.com",
+        "password": "0ULf:1F3}7v;_[mb6"
+    },
+    "Ebay": {
+        "email": "example@email.com",
+        "password": "fsd897fEF&^"
+    },
+    "sample_website": {
+        "email": "custom_username@email.com",
+        "password": "aV-cq3i}pB~Z07"
+    },
+    "E-corp": {
+        "email": "example@email.com",
+        "password": "9,x7Pw^m2hYZB8f)"
+    }
+}
