@@ -8,8 +8,9 @@ question_bank = []
 for question in question_data:
     question_bank.append(
         Question(
-            q_text=question["question"], answer=question["correct_answer"])
-    )
+            q_text=question["question"],
+            answer=question["correct_answer"])
+        )
 
 quiz = QuizBrain(question_bank)
 while quiz.still_has_questions():
