@@ -20,8 +20,8 @@ from zoneinfo import ZoneInfo
 from smtplib import SMTP
 import time
 
-LATITUDE = 39.661548
-LONGITUDE = 66.936773
+LATITUDE = float()
+LONGITUDE = float()
 TIME_ZONE = "Asia/Tashkent"
 EMAIL_PROVIDER_HOST = "smtp.gmail.com"
 MY_EMAIL = ""
