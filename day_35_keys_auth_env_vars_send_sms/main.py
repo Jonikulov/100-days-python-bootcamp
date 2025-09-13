@@ -8,6 +8,7 @@ LONGITUDE = float()
 OWM_API_KEY = ""
 TWILIO_ACCOUNT_SID = ""
 TWILIO_AUTH_TOKEN = ""
+TWILIO_PHONE = ""
 MY_PHONE = ""
 
 def determine_weather_forecast() -> bool:
@@ -31,7 +32,7 @@ def send_sms_msg(message):
     print("Sending SMS message:", message)
     client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     msg = client.messages.create(
-        from_="+18777814538",
+        from_=TWILIO_PHONE,
         to=MY_PHONE,
         body="Don't forget to get an ☂️ (umbrella)!",
     )
