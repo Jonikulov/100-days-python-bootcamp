@@ -1,7 +1,5 @@
 """Day 40. Capstone Part 2: Flight Club"""
 
-# The Flight Club form: https://forms.gle/PW6gZvNW1k7ooB6t9
-
 from data_manager import DataManager
 from flight_data import FlightData
 from flight_search import FlightSearch
