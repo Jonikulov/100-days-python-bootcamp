@@ -1,0 +1,22 @@
+html {
+  font-family: sans;
+  text-align: center;
+}
+
+.color-center {
+  color: white;
+  background: rgb(83, 83, 205);
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+li {
+    display: inline;
+    padding: 15px;
+}
