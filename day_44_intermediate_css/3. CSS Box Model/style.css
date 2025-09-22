@@ -1,0 +1,27 @@
+div {
+    width: 200px;
+    height: 200px;
+}
+
+#green {
+    background-color: cadetblue;
+    border: 10px solid black;
+    padding: 20px;
+}
+
+#yellow {
+    background-color: gold;
+    border: solid black;
+    border-width: 20px 10px;
+    margin-left: 260px;
+}
+
+#red {
+    background-color: indianred;
+    border: 10px solid black;
+    margin-left: 40px;
+}
+
+p {
+    margin: 0;
+}

@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+ES&display=swap");
+
+html {
+    font-size: 30px;
+}
+
+body {
+  background-color: cornflowerblue;
+  color: white;
+  font-size: 18px;
+}
+
+#coral {
+  color: coral;
+}
+
+.xx-size {
+  font-size: 2rem;
+}
+
+.bold-text {
+  font-weight: 900;
+}
+
+.right-aligned {
+  text-align: right;
+}
+
+.playwrite-es-cursive {
+  font-family: "Playwrite ES", cursive;
+  /* font-optical-sizing: auto; */
+  /* font-weight: 400; */
+  font-style: italic;
+}
