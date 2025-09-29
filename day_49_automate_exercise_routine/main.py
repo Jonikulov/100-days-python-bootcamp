@@ -18,7 +18,7 @@ CLASS_TIME = "6:00 PM"
 
 chrome_opts = webdriver.ChromeOptions()
 chrome_opts.add_experimental_option("detach", True)
-user_data_dir = Path().absolute() / "chrome_profile"
+user_data_dir = Path("../chrome_profile").absolute().resolve()
 chrome_opts.add_argument(f"--user-data-dir={user_data_dir}")
 driver = webdriver.Chrome(options=chrome_opts)
 # driver.maximize_window()
