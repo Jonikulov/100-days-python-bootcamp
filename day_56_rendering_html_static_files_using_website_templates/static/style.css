@@ -1,0 +1,27 @@
+img {
+  border-radius: 50px;
+  /* margin-right: 25px; */
+}
+
+div.cv-heading {
+  display: flex;
+  align-items: center; /* aligns vertically with the image */
+  gap: 25px;
+}
+
+.contact-details p {
+  margin: 0.7em;
+}
+
+table.work-experience td {
+  padding: 5px;
+  padding-right: 10px;
+}
+
+table.tech-skills td {
+  padding: 5px;
+}
+
+table.tech-skills tr td:nth-child(1) {
+  font-style: italic;
+}
