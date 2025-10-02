@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sacramento&display=swap');
+
+body {
+  text-align: center;
+  margin: 0;
+}
+
+.landing-content {
+  background-color: #e4f9f5;
+  font-family: sans-serif;
+}
+
+.main-content {
+  margin-top: 70px;
+  padding: 0 400px;
+}
+
+p {
+  font-size: large;
+}
+
+.profile-img {
+  border-radius: 100px;
+  color: #40514E;
+}
+
+h1 {
+  color: #62b0b0;
+  font-size: 5rem;
+  margin: 70px auto 0 auto;
+  font-family: 'Sacramento', cursive;
+}
+
+h2 {
+  color: #62b0b0;
+  font-size: 3rem;
+  font-weight: normal;
+  margin: 20px auto;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+  color: #62b0b0;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.top-cloud {
+  margin: 3% 0 0 50%;
+  transform: scaleX(-1);
+}
+
+.bottom-cloud {
+  margin: 10px 0 0 -50%;
+}
+
+hr {
+  border: dotted #EAF6F6 5px;
+  width: 100px;
+  border-bottom: none;
+  margin: 75px auto;
+}
+
+.skill-row {
+  display: flex;
+  text-align: left;
+  align-items: center; /* aligns vertically with the image */
+  gap: 25px;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+.skill-row img {
+  border-radius: 25px;
+  width: 200px;
+}
+
+.contact-me p {
+  margin-bottom: 55px;
+}
+
+.btn {
+  background-color: #11cdd4;
+  border: none;
+  border-radius: 8px;
+  margin: 205px ;
+  padding: 15px 25px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  background-image: linear-gradient(to bottom, #11cdd4, #11999e);
+  text-decoration: none;
+}
+
+a:hover {
+  color: #EAF6F6;
+}
+
+footer {
+  margin: 100px 0 0 0;
+  background-color: #71c8c8;
+  padding: 50px;
+  color: white;
+}
+
+footer a {
+  color: #4da1a1;
+  text-decoration: none;
+  font-size: 20px;
+  padding: 30px;
+}

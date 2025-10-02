@@ -1,5 +1,3 @@
-"""Day 56. Rendering HTML/Static Files, Using Website Templates"""
-
 from flask import Flask, render_template
 
 app = Flask(__name__)
