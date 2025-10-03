@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog</title>
+
+</head>
+
+<body>
+
+<h1>Blog Website</h1>
+{% for blog in blog_data %}
+  {% if blog["id"] == 2 %}
+    <h2>{{ blog["title"] }}</h2>
+    <h3>{{ blog["subtitle"] }}</h3>
+    {% break %}
+  {% endif %}
+  <h4>--- ID: {{ blog["id"] }} ---</h4>
+{% endfor %}
+
+</body>
+
+</html>
