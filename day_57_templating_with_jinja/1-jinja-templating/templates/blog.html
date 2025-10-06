@@ -13,12 +13,15 @@
 
 <h1>Blog Website</h1>
 {% for blog in blog_data %}
-  {% if blog["id"] == 2 %}
-    <h2>{{ blog["title"] }}</h2>
-    <h3>{{ blog["subtitle"] }}</h3>
+  <h4>--- ID: {{ blog.id }} ---</h4>
+  {% if not num %}
+    <h2>{{ blog.title }}</h2>
+    <h3>{{ blog.subtitle }}</h3>
+  {% elif num == blog.id %}
+    <h2>{{ blog.title }}</h2>
+    <h3>{{ blog.subtitle }}</h3>
     {% break %}
   {% endif %}
-  <h4>--- ID: {{ blog["id"] }} ---</h4>
 {% endfor %}
 
 </body>

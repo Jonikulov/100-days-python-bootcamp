@@ -3,7 +3,7 @@
 import random
 import requests
 from datetime import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 app.jinja_env.add_extension("jinja2.ext.loopcontrols")
@@ -21,8 +21,8 @@ def index_page():
 
 @app.route("/hello/")
 @app.route("/hello/<string:name>")
-def say_hello(name=None):
-    return render_template("hello.html", name=name)
+def say_hello(name=""):
+    return render_template("hello.html", name=name.title())
 
 
 @app.route("/guess/<string:name>")
@@ -38,12 +38,12 @@ def guess_gender_age(name):
         age=age,
     )
 
-
 @app.route("/blog")
-def blog_website():
+@app.route("/blog/<int:num>")
+def blog_website(num=None):
     resp = requests.get("https://api.npoint.io/c790b4d5cab58020d391")
     blog_data = resp.json()
-    return render_template("blog.html", blog_data=blog_data)
+    return render_template("blog.html", blog_data=blog_data, num=num)
 
 
 if __name__ == "__main__":
