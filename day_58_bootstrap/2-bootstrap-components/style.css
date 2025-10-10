@@ -1,0 +1,49 @@
+body {
+  text-align: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 55px;
+  /* margin-top: 75px; */
+}
+
+a.navbar-brand {
+  padding-left: 5px;
+}
+
+.page-head {
+  padding: 100px 0;
+  width: 750px;
+  font-size: 1.25rem;
+}
+
+.page-head button {
+  margin: 10px;
+  width: 160px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 7px;
+}
+
+button.contact {
+  border: 1px solid gray;
+  color: gray;
+  background-color: white;
+}
+
+button.contact:hover {
+  color: white;
+  background-color: gray;
+}
+
+.page-head img {
+  margin-top: 50px;
+}
+
+.page-body {
+  text-align: left;
+  width: 1300px;
+  /* padding: 100px 0; */
+  /* font-size: 1.25rem; */
+}
