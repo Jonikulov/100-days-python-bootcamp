@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 
 app = Flask(__name__)
-# TODO: list -> dict: id, body, title, subtitle, image_url, author, dates
 blog_data_url = "https://api.npoint.io/0c7a675dc18034b2da20"
 blog_data = requests.get(blog_data_url).json()
 for blog in blog_data:
