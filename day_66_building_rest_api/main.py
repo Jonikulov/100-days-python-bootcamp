@@ -7,12 +7,12 @@ import os
 import random
 
 load_dotenv()
-sqlalchemy_db_uri = f"sqlite:///{os.getenv("SQLITE_DATABASE_NAME")}"
+SQLALCHEMY_DB_URI = f"sqlite:///{os.getenv("SQLITE_DATABASE_NAME")}"
 
 app = Flask(__name__)
 app.config.update(
     SECRET_KEY=os.getenv("RANDOM_SECRET_KEY"),
-    SQLALCHEMY_DATABASE_URI=sqlalchemy_db_uri,
+    SQLALCHEMY_DATABASE_URI=SQLALCHEMY_DB_URI,
 )
 
 # CREATE DB
@@ -61,8 +61,7 @@ def get_random_cafe():
 @app.route("/all")
 def get_all():
     all_cafes = db.session.execute(
-        db.select(Cafe)
-        .order_by(Cafe.id)
+        db.select(Cafe).order_by(Cafe.id)
     ).scalars()
     return jsonify([cafe.to_dict() for cafe in all_cafes])
 
@@ -91,10 +90,10 @@ def add_cafe():
         img_url=request.form.get("img_url"),
         location=request.form.get("location"),
         seats=request.form.get("seats"),
-        has_toilet=int(request.form.get("has_toilet")),
-        has_wifi=int(request.form.get("has_wifi")),
-        has_sockets=int(request.form.get("has_sockets")),
-        can_take_calls=int(request.form.get("can_take_calls")),
+        has_toilet=bool(request.form.get("has_toilet")),
+        has_wifi=bool(request.form.get("has_wifi")),
+        has_sockets=bool(request.form.get("has_sockets")),
+        can_take_calls=bool(request.form.get("can_take_calls")),
         coffee_price=request.form.get("coffee_price"),
     ))
     db.session.commit()
