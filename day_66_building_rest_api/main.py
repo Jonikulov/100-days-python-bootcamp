@@ -7,7 +7,7 @@ import os
 import random
 
 load_dotenv()
-SQLALCHEMY_DB_URI = f"sqlite:///{os.getenv("SQLITE_DATABASE_NAME")}"
+SQLALCHEMY_DB_URI = "sqlite:///cafes.db"
 
 app = Flask(__name__)
 app.config.update(
