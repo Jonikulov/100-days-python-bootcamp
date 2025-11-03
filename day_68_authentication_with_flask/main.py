@@ -74,11 +74,19 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
+        email = request.form.get("email")
         new_user = User(
             name = request.form.get("name"),
-            email = request.form.get("email"),
+            email = email,
             password = generate_password_hash(request.form.get("password")),
         )
+        user = db.session.execute(
+            db.select(User).where(User.email == email)
+        ).scalar_one_or_none()
+        if user:
+            flash("The email already registered, log in instead.")
+            return redirect(url_for("login"))
+
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("login"))
@@ -94,7 +102,11 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
         user = User.query.filter_by(email=email).first()
-        if not user or not check_password_hash(user.password, password):
+        if not user:
+            flash("The email does not exist.")
+            return render_template("login.html")
+        elif not check_password_hash(user.password, password):
+            flash("The password inccorrect.")
             return render_template("login.html")
         login_user(user)
         return redirect(url_for("secrets"))
