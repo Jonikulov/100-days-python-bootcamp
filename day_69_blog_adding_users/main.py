@@ -1,17 +1,17 @@
 import os
 from datetime import date
 from dotenv import load_dotenv
-from flask import Flask, request, render_template, redirect, url_for, abort, flash
+from functools import wraps
+from flask import Flask, request, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
-from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
+from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Text
-from functools import wraps
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import Integer, String, Text, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from forms import CreatePostForm, RegisterForm
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from gravatar import get_gravatar_url
 
 load_dotenv()
@@ -38,22 +38,48 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 # Configure Tables
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
+    name: Mapped[str] = mapped_column(String(1000), nullable=False)
+    email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(100), nullable=False)
+    # This will act like a List of BlogPost objects attached to each User.
+    # The "author" refers to the author property in the BlogPost class.
+    posts: Mapped[list["BlogPost"]] = relationship(back_populates="post_author")
+    comments: Mapped[list["Comment"]] = relationship(back_populates="comment_author")
+
+
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
     subtitle: Mapped[str] = mapped_column(String(250), nullable=False)
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
-    author: Mapped[str] = mapped_column(String(250), nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
+    # Create Foreign Key, "users.id" the users refers to the tablename of User.
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    # Create reference to the User object. The "posts" refers to the posts property in the User class.
+    post_author: Mapped["User"] = relationship(back_populates="posts")
 
-class User(db.Model, UserMixin):
+    comments: Mapped[list["Comment"]] = relationship(back_populates="parent_post")
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String(1000))
-    email: Mapped[str] = mapped_column(String(100), unique=True)
-    password: Mapped[str] = mapped_column(String(100))
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    comment_author: Mapped["User"] = relationship(back_populates="comments")
+
+    post_id: Mapped[int] = mapped_column(ForeignKey("blog_posts.id"))
+    parent_post: Mapped["BlogPost"] = relationship(back_populates="comments")
+
 
 # Create database & tables
 with app.app_context():
@@ -68,15 +94,24 @@ login_manager.init_app(app)
 def user_loader(user_id):
     return db.session.get(entity=User, ident=user_id)
 
+
+def admin_only(func):
+    @wraps(func)
+    def decorated_func(*args, **kwargs):
+        if current_user.id != 1:
+            return abort(403)
+        return func(*args, **kwargs)
+    return decorated_func
+
 # ============================ Routes & Endpoints ============================
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     form = RegisterForm()
-    if request.method == "POST":
+    if form.validate_on_submit():
         email = form.email.data
         new_user = User(
-            name = form.email.name,
+            name = form.name.data,
             email = email,
             password = generate_password_hash(form.password.data),
         )
@@ -89,6 +124,7 @@ def register():
 
         db.session.add(new_user)
         db.session.commit()
+        login_user(new_user)
         return redirect(url_for("get_all_posts"))
 
     if current_user.is_authenticated:
@@ -98,22 +134,23 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
         email = request.form.get("email")
         password = request.form.get("password")
         user = User.query.filter_by(email=email).first()
         if not user:
             flash("The email does not exist.")
-            return render_template("login.html")
+            return render_template("login.html", form=login_form)
         elif not check_password_hash(user.password, password):
             flash("The password inccorrect.")
-            return render_template("login.html")
+            return render_template("login.html", form=login_form)
         login_user(user)
         return redirect(url_for("get_all_posts"))
 
     if current_user.is_authenticated:
         return redirect(url_for("get_all_posts"))
-    return render_template("login.html")
+    return render_template("login.html", form=login_form)
 
 
 @app.route("/logout")
@@ -129,15 +166,36 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-# TODO: Allow logged-in users to comment on posts
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        if not current_user.is_authenticated:
+            flash("You need to login or register to comment.")
+            return redirect(url_for("login"))
+
+        new_comment = Comment(
+            text=comment_form.comment.data,
+            comment_author=current_user,
+            parent_post=requested_post,
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect(url_for("show_post", post_id=post_id))
+    comments = db.session.execute(
+        db.select(Comment).where(Comment.post_id == post_id)
+    ).scalars()
+    return render_template(
+        "post.html",
+        post=requested_post,
+        form=comment_form,
+        comments=comments
+    )
 
 
-# TODO: Use a decorator so only an admin user can create a new post
 @app.route("/new-post", methods=["GET", "POST"])
+@admin_only
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -146,7 +204,7 @@ def add_new_post():
             subtitle=form.subtitle.data,
             body=form.body.data,
             img_url=form.img_url.data,
-            author=current_user,
+            post_author=current_user,
             date=date.today().strftime("%B %d, %Y")
         )
         db.session.add(new_post)
@@ -155,8 +213,8 @@ def add_new_post():
     return render_template("make-post.html", form=form)
 
 
-# TODO: Use a decorator so only an admin user can edit a post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@admin_only
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
     edit_form = CreatePostForm(
@@ -177,8 +235,8 @@ def edit_post(post_id):
     return render_template("make-post.html", form=edit_form, is_edit=True)
 
 
-# TODO: Use a decorator so only an admin user can delete a post
 @app.route("/delete/<int:post_id>")
+@admin_only
 def delete_post(post_id):
     post_to_delete = db.get_or_404(BlogPost, post_id)
     db.session.delete(post_to_delete)
