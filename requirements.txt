@@ -22,3 +22,5 @@ notebook==7.4.7
 matplotlib==3.10.7
 plotly==6.4.0
 anywidget==0.9.21
+scipy==1.16.3
+Pillow==12.0.0
