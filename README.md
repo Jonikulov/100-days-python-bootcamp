@@ -14,8 +14,6 @@
 
 ### Learn & Research:
 
-* [Session Vs JWT: The Differences You May Not Know!](https://www.youtube.com/watch?v=fyTxwIa-1U0)
-* [API Authentication: JWT, OAuth2, and More](https://www.youtube.com/watch?v=xJA8tP74KD0)
 * [Authentication Explained: When to Use Basic, Bearer, OAuth2, JWT & SSO](https://www.youtube.com/watch?v=9JPnN1Z_iSY)
 * [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
 * [Cross Site Request Forgery (CSRF)](https://owasp.org/www-community/attacks/csrf)
@@ -37,7 +35,7 @@
     * Disappearing Text Writing App [day 90]
     * Tic Tac Toe [day 84]
     - Automate the Google Dinosaur Game [day 94]
-    * Breakout (Arkanoid) Game [day 87]
+    * Breakout / Brick Breaker / Arkanoid Game [day 87]
     * Space Invaders Game [day 95]
 
 
